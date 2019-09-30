@@ -451,7 +451,7 @@ nsapi_error_t UBLOX_AT_CellularStack::gethostbyname(const char *host, SocketAddr
     } else {
         // This interrogation can sometimes take longer than the usual 8 seconds
         _at.cmd_start_stop("+UDNSRN", "=0,", "%s", host);
-#ifdef TARGET_UBLOX_C030_R41XM
+#ifdef UBX_MDM_SARA_R41XM
         _at.set_at_timeout(70000);
 #else
         _at.set_at_timeout(120000);

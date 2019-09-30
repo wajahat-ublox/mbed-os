@@ -18,7 +18,6 @@
 #include "UBLOX_AT_CellularStack.h"
 #include "APN_db.h"
 #include "CellularLog.h"
-
 #include "rtos/ThisThread.h"
 
 namespace mbed {
@@ -53,13 +52,13 @@ void UBLOX_AT_CellularContext::do_connect()
     _cb_data.error = NSAPI_ERROR_NO_CONNECTION;
 
     // Attempt to establish a connection
-#ifndef TARGET_UBLOX_C030_R41XM
+#ifndef UBX_MDM_SARA_R41XM
     _cb_data.error = define_context();
-#elif TARGET_UBLOX_C030_R410M
+#elif UBX_MDM_SARA_R410M
     _is_context_active = true;
     _is_context_activated = true;
     _cb_data.error = NSAPI_ERROR_OK;
-#elif TARGET_UBLOX_C030_R412M
+#elif UBX_MDM_SARA_R412M
     CellularNetwork::RadioAccessTechnology rat = read_radio_technology();
     if (rat == CellularNetwork::RadioAccessTechnology::RAT_EGPRS) {
         if (!_is_context_active) {
@@ -100,7 +99,7 @@ void UBLOX_AT_CellularContext::do_connect()
     }
 }
 
-#ifndef TARGET_UBLOX_C030_R41XM
+#ifndef UBX_MDM_SARA_R41XM
 nsapi_error_t UBLOX_AT_CellularContext::define_context()
 {
     bool success = false;
@@ -234,7 +233,7 @@ int UBLOX_AT_CellularContext::nsapi_security_to_modem_security(AuthenticationTyp
         case CHAP:
             modem_security = 2;
             break;
-#ifndef TARGET_UBLOX_C030_R41XM
+#ifndef UBX_MDM_SARA_R41XM
         case AUTOMATIC:
             modem_security = 3;
             break;
@@ -309,7 +308,7 @@ CellularContext::AuthenticationType UBLOX_AT_CellularContext::get_auth()
     return _authentication_type;
 }
 
-#ifdef TARGET_UBLOX_C030_R412M
+#ifdef UBX_MDM_SARA_R412M
 CellularNetwork::RadioAccessTechnology UBLOX_AT_CellularContext::read_radio_technology()
 {
     int act;
@@ -343,6 +342,6 @@ CellularNetwork::RadioAccessTechnology UBLOX_AT_CellularContext::read_radio_tech
 
     return rat;
 }
-#endif // #ifdef TARGET_UBLOX_C030_R412M
+#endif // #ifdef UBX_MDM_SARA_R412M
 
 } /* namespace mbed */
